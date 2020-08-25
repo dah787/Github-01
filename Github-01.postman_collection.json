@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "57848f4a-85b2-4672-bf4f-779de11c6403",
+		"name": "Github-01",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create repository",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "85629c44-c020-4f00-9480-59d599da3a4a",
+						"exec": [
+							"var randomNum = Math.random().toFixed(3) * 1000;\r",
+							"var repoNameVar = \"Repo-\" + randomNum;\r",
+							"pm.environment.set(\"repoName\", repoNameVar);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8ddf1c45-b288-4e6c-843c-24332b38d396",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Repository's name\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"repoName\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{repoName}}\", //*\r\n    \"description\": \"This is your first repository\",\r\n    \"homepage\": \"https://github.com\",\r\n    \"private\": false,\r\n    \"has_issues\": true,\r\n    \"has_projects\": true,\r\n    \"has_wiki\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basic_url}}/user/repos",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"user",
+						"repos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ce8a861b-29dc-4fb4-8bc4-fee453079ddd",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Label's name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.labels[0].name).to.eql(\"bug\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Found a bug\",\r\n    \"body\": \"I'm having a problem with this.\",\r\n/*    \"assignees\": [\r\n        \"octocat\"\r\n    ],\r\n    \"milestone\": 1,*/\r\n    \"labels\": [\r\n        \"bug\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basic_url}}/repos/:owner/:repo/issues",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"repos",
+						":owner",
+						":repo",
+						"issues"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{owner}}"
+						},
+						{
+							"key": "repo",
+							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete repository",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c63fbad0-47fc-476c-9fc0-61ca6907c22e",
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{basic_url}}/repos/:owner/:repo",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"repos",
+						":owner",
+						":repo"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{owner}}"
+						},
+						{
+							"key": "repo",
+							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ger deleted repository",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bc890854-1729-4668-8a21-e0d0c31abcfc",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{basic_url}}/repos/:owner/:repo",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"repos",
+						":owner",
+						":repo"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{owner}}"
+						},
+						{
+							"key": "repo",
+							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d3fde846-98a6-40c8-9b92-535bb1f151b0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "cde2384f-a037-427a-a548-fad524ed2276",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
