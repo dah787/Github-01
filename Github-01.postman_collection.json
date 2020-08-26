@@ -6,6 +6,161 @@
 	},
 	"item": [
 		{
+			"name": "Get list of gists for user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1533d178-944e-4236-ba3a-8e1fa5e50a98",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"\r",
+							"if (Number(x) >= 0) {\r",
+							"    pm.test(\"User \" + pm.environment.get(\"owner\") + \" has \" + (Number(x) + 1) + \" gists\");\r",
+							"} else {\r",
+							"    pm.test(\"User \" + pm.environment.get(\"owner\") + \" has no gists\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{basic_url}}/users/:username/gists",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"users",
+						":username",
+						"gists"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{owner}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of user projects",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f438945-e0a1-47b1-ad1c-43ba0146efdc",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"\r",
+							"if (Number(x) >= 0) {\r",
+							"    pm.test(\"User \" + pm.environment.get(\"owner\") + \" has \" + (Number(x) + 1) + \" projects\");\r",
+							"} else {\r",
+							"    pm.test(\"User \" + pm.environment.get(\"owner\") + \" has no projects\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.github.inertia-preview+json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{basic_url}}/users/:username/projects",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"users",
+						":username",
+						"projects"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{owner}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of repositories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "03a4dc8a-06b3-4e85-a8f0-7361554cabdf",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"pm.test(\"User \" + pm.environment.get(\"owner\") + \" has \" + (Number(x) + 1) + \" repositories\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{basic_url}}/users/:username/repos",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"users",
+						":username",
+						"repos"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{owner}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create repository",
 			"event": [
 				{
@@ -30,7 +185,7 @@
 							"});\r",
 							"\r",
 							"var jsonData = pm.response.json();\r",
-							"pm.test(\"Repository's name\", function () {\r",
+							"pm.test(\"Repository \" + pm.environment.get(\"repoName\") + \" has been created\", function () {\r",
 							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"repoName\"));\r",
 							"});"
 						],
@@ -64,7 +219,52 @@
 			"response": []
 		},
 		{
-			"name": "Create issue",
+			"name": "Get list of repositories 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6436a68f-e111-44a0-91d8-4518fc7a9355",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"pm.test(\"User \" + pm.environment.get(\"owner\") + \" has \" + (Number(x) + 1) + \" repositories\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{basic_url}}/users/:username/repos",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"users",
+						":username",
+						"repos"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{owner}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create issue of repository",
 			"event": [
 				{
 					"listen": "test",
@@ -75,8 +275,8 @@
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Label's name\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Created issue \" + jsonData.title + \" has label \" + jsonData.labels[0].name, function () {\r",
 							"    pm.expect(jsonData.labels[0].name).to.eql(\"bug\");\r",
 							"});"
 						],
@@ -122,6 +322,294 @@
 			"response": []
 		},
 		{
+			"name": "Get topics of repository",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "84668e28-20e8-4ceb-9505-31cafee156ce",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"\r",
+							"if (Number(x) >= 0) {\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has \" + (Number(x) + 1) + \" topics\");\r",
+							"} else {\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has no topics\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.github.mercy-preview+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{basic_url}}/repos/:owner/:repo/topics",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"repos",
+						":owner",
+						":repo",
+						"topics"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{owner}}"
+						},
+						{
+							"key": "repo",
+							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tags of repository",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e8d999ff-7ff1-4962-b6ff-1f1677d1e86e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"\r",
+							"if (Number(x) >= 0) {\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has \" + (Number(x) + 1) + \" tags\");\r",
+							"} else {\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has no tags\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/vnd.github.mercy-preview+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{basic_url}}/repos/:owner/:repo/tags",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"repos",
+						":owner",
+						":repo",
+						"tags"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{owner}}"
+						},
+						{
+							"key": "repo",
+							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get webhooks of repository",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9531ac65-40cb-4b68-bd03-a1c01f5cd0e6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"\r",
+							"if (Number(x) >= 0) {\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has \" + (Number(x) + 1) + \" hooks\");\r",
+							"} else {\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has no hooks\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/vnd.github.mercy-preview+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{basic_url}}/repos/:owner/:repo/hooks",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"repos",
+						":owner",
+						":repo",
+						"hooks"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{owner}}"
+						},
+						{
+							"key": "repo",
+							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of repository contributors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b6f2d89a-fc4d-4462-884f-314d785b223a",
+						"exec": [
+							"var responseCode = pm.response.code;\r",
+							"pm.test(\"Status code is \" + responseCode, function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+							"});\r",
+							"\r",
+							"if (responseCode === 200) {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    for (var x in jsonData) {\r",
+							"        //console.log(jsonData[x].name);\r",
+							"    }\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has \" + (Number(x) + 1) + \" contributors\");\r",
+							"} else {\r",
+							"    pm.test(pm.environment.get(\"repoName\") + \" has no contributors\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+							"});\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/vnd.github.mercy-preview+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{basic_url}}/repos/:owner/:repo/contributors",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"repos",
+						":owner",
+						":repo",
+						"contributors"
+					],
+					"variable": [
+						{
+							"key": "owner",
+							"value": "{{owner}}"
+						},
+						{
+							"key": "repo",
+							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete repository",
 			"event": [
 				{
@@ -129,9 +617,27 @@
 					"script": {
 						"id": "c63fbad0-47fc-476c-9fc0-61ca6907c22e",
 						"exec": [
-							"pm.test(\"Status code is 204\", function () {\r",
+							"/*pm.test(\"Status code is 204\", function () {\r",
 							"    pm.response.to.have.status(204);\r",
-							"});"
+							"});*/\r",
+							"\r",
+							"if (responseCode.code === 204) {\r",
+							"    pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"    pm.test(\"Supposed, repository \" + pm.environment.get(\"repoName\") + \" has been deleted\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"})\r",
+							"} else {\r",
+							"    pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"    //pm.test(\"Repo not deleted\", function () {\r",
+							"    //pm.response.to.have.status(204);\r",
+							"    pm.test(\"Supposed, repository \" + pm.environment.get(\"repoName\") + \" has been deleted\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"})\r",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -165,7 +671,7 @@
 			"response": []
 		},
 		{
-			"name": "Ger deleted repository",
+			"name": "Get deleted repository",
 			"event": [
 				{
 					"listen": "test",
@@ -174,7 +680,9 @@
 						"exec": [
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.test(\"Repository \" + pm.environment.get(\"repoName\") + \" does not exist\");"
 						],
 						"type": "text/javascript"
 					}
@@ -201,6 +709,51 @@
 						{
 							"key": "repo",
 							"value": "{{repoName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of repositories 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3273d5d-02cb-4aa5-bbe8-f1c61a46660d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"for (var x in jsonData) {\r",
+							"    //console.log(jsonData[x].name);\r",
+							"}\r",
+							"pm.test(\"User \" + pm.environment.get(\"owner\") + \" has \" + (Number(x) + 1) + \" repositories\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{basic_url}}/users/:username/repos",
+					"host": [
+						"{{basic_url}}"
+					],
+					"path": [
+						"users",
+						":username",
+						"repos"
+					],
+					"variable": [
+						{
+							"key": "username",
+							"value": "{{owner}}"
 						}
 					]
 				}
